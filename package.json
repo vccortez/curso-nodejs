@@ -1,0 +1,29 @@
+{
+  "name": "pizzaplace",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.3",
+    "express": "^4.16.4",
+    "mongoose": "^5.3.13",
+    "mongoose-currency": "^0.2.0",
+    "morgan": "^1.9.1",
+    "pug": "^2.0.3"
+  },
+  "description": "projeto de introdução ao node.js",
+  "main": "app.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/vekat/curso-nodejs.git"
+  },
+  "author": "Vitor Cortez <vitor.a.cortez@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vekat/curso-nodejs/issues"
+  },
+  "homepage": "https://github.com/vekat/curso-nodejs#readme"
+}
