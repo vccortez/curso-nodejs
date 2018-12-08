@@ -1,5 +1,6 @@
 const express = require('express')
 
+const autenticar = require('../autenticar')
 const Combo = require('../models/combo')
 
 const comboRouter = express.Router()
@@ -11,13 +12,13 @@ comboRouter.route('/')
       .then(res.json.bind(res))
       .catch(next)
   })
-  .post((req, res, next) => {
+  .post(autenticar.verifyUser, (req, res, next) => {
     Combo.create(req.body)
       .then(res.json.bind(res))
       .catch(next)
   })
   .put(unsupported)
-  .delete((req, res, next) => {
+  .delete(autenticar.verifyUser, (req, res, next) => {
     Combo.deleteMany({}).exec()
       .then(res.json.bind(res))
       .catch(next)
@@ -30,7 +31,7 @@ comboRouter.route('/:comboId')
       .catch(next)
   })
   .post(unsupported)
-  .put((req, res, next) => {
+  .put(autenticar.verifyUser, (req, res, next) => {
     Combo.findByIdAndUpdate(
       req.params.comboId,
       { $set: req.body },
@@ -38,7 +39,7 @@ comboRouter.route('/:comboId')
       .then(res.json.bind(res))
       .catch(next)
   })
-  .delete((req, res, next) => {
+  .delete(autenticar.verifyUser, (req, res, next) => {
     Combo.findByIdAndRemove(req.params.comboId).exec()
       .then(res.json.bind(res))
       .catch(next)

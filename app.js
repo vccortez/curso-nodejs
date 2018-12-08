@@ -2,7 +2,12 @@ const path = require('path')
 const express = require('express')
 const logger = require('morgan')
 const mongoose = require('mongoose')
-const cookieParser = require('cookie-parser')
+// const cookieParser = require('cookie-parser')
+const passport = require('passport')
+const sessao = require('express-session')
+const FileStore = require('session-file-store')(sessao)
+
+const config = require('./config')
 
 const index = require('./routes/index')
 const users = require('./routes/users')
@@ -12,7 +17,7 @@ const promoRouter = require('./routes/promoRouter')
 const comboRouter = require('./routes/comboRouter')
 
 // mongoose connection
-mongoose.connect('mongodb://localhost:27017/pizzaPlace', {
+mongoose.connect(config.mongoURL, {
   useNewUrlParser: true,
   useFindAndModify: false,
   useCreateIndex: true
@@ -28,8 +33,18 @@ app.set('view engine', 'pug')
 app.use(logger('dev'))
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
-app.use(cookieParser())
+// app.use(cookieParser('segredo'))
 app.use(express.static(path.join(__dirname, 'public')))
+app.use(sessao({
+  name: 'sessao-id',
+  secret: 'segredo',
+  saveUninitialized: false,
+  resave: false,
+  store: new FileStore()
+}))
+
+app.use(passport.initialize())
+app.use(passport.session())
 
 app.use('/', index)
 app.use('/users', users)

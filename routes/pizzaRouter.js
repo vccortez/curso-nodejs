@@ -1,5 +1,6 @@
 const express = require('express')
 
+const autenticar = require('../autenticar')
 const Pizza = require('../models/pizza')
 
 const pizzaRouter = express.Router()
@@ -11,13 +12,13 @@ pizzaRouter.route('/')
       .then(res.json.bind(res))
       .catch(next)
   })
-  .post((req, res, next) => {
+  .post(autenticar.verifyUser, (req, res, next) => {
     Pizza.create(req.body)
       .then(res.json.bind(res))
       .catch(next)
   })
   .put(unsupported)
-  .delete((req, res, next) => {
+  .delete(autenticar.verifyUser, (req, res, next) => {
     Pizza.deleteMany({}).exec()
       .then(res.json.bind(res))
       .catch(next)
@@ -30,7 +31,7 @@ pizzaRouter.route('/:pizzaId')
       .catch(next)
   })
   .post(unsupported)
-  .put((req, res, next) => {
+  .put(autenticar.verifyUser, (req, res, next) => {
     Pizza.findByIdAndUpdate(
       req.params.pizzaId,
       { $set: req.body },
@@ -38,7 +39,7 @@ pizzaRouter.route('/:pizzaId')
       .then(res.json.bind(res))
       .catch(next)
   })
-  .delete((req, res, next) => {
+  .delete(autenticar.verifyUser, (req, res, next) => {
     Pizza.findByIdAndRemove(req.params.pizzaId).exec()
       .then(res.json.bind(res))
       .catch(next)
@@ -51,7 +52,7 @@ pizzaRouter.route('/:pizzaId/comments')
       .then(res.json.bind(res))
       .catch(next)
   })
-  .post((req, res, next) => {
+  .post(autenticar.verifyUser, (req, res, next) => {
     Pizza.findById(req.params.pizzaId).exec()
       .then((pizza) => {
         if (!pizza) return null
@@ -62,7 +63,7 @@ pizzaRouter.route('/:pizzaId/comments')
       .catch(next)
   })
   .put(unsupported)
-  .delete((req, res, next) => {
+  .delete(autenticar.verifyUser, (req, res, next) => {
     Pizza.findById(req.params.pizzaId).exec()
       .then((pizza) => {
         if (!pizza) return null
@@ -86,7 +87,7 @@ pizzaRouter.route('/:pizzaId/comments/:commentId')
       .catch(next)
   })
   .post(unsupported)
-  .put((req, res, next) => {
+  .put(autenticar.verifyUser, (req, res, next) => {
     Pizza.findById(req.params.pizzaId).exec()
       .then((pizza) => {
         if (!pizza) return null
@@ -99,7 +100,7 @@ pizzaRouter.route('/:pizzaId/comments/:commentId')
       .then(res.json.bind(res))
       .catch(next)
   })
-  .delete((req, res, next) => {
+  .delete(autenticar.verifyUser, (req, res, next) => {
     Pizza.findById(req.params.pizzaId)
       .then((pizza) => {
         if (!pizza) return null
